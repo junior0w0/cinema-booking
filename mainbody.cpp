@@ -2,7 +2,7 @@
 #include <fstream>
 #include <windows.h>
 #include <iomanip>
-
+#include <cctype>
 
 using namespace std;
 
@@ -43,7 +43,6 @@ public:
     }    
 };
 
-
 void layar()
 {
     char kolomkursipembeli;
@@ -77,16 +76,18 @@ void pemilihan()
         int kolom;
         int opsi;
         int tampilan;
+        int terakhir = 0;
+        string kursi[6][6] = {{"X","A","B","C","D","E"},{"1","0","0","0","0","0"},{"2","0","0","0","0","0"},{"3","0","0","0","0","0"},{"4","0","0","0","0","0"},{"5","0","0","0","0","0"}};
 
         menu:
         cout << film << "\n";
-        cout << "1. Input\n2. Lihat daftar\n";
+        cout << "1. Input\n2. Lihat daftar\n3. Kembali ke menu\n";
         cin >> opsi;
         cin.ignore();
 
         if (opsi == 1)
         {
-            string kursi[6][6] = {{"X","A","B","C","D","E"},{"1","0","0","0","0","0"},{"2","0","0","0","0","0"},{"3","0","0","0","0","0"},{"4","0","0","0","0","0"},{"5","0","0","0","0","0"}};
+            
             for (int j = 0; j < 6; j++)
             {
                 cout << setw(25);
@@ -110,7 +111,7 @@ void pemilihan()
                 cout << film << "\n";
             }
             
-            int i = 0;
+            int i = terakhir;
             while(i < jumlahmaksimumkursi)
             {
                 cout << i+1 << ".";
@@ -122,7 +123,9 @@ void pemilihan()
                 {
                     cout << "Kolom kursi: ";
                     cin >> kolomkursipembeli;
-                    kolom = kolomkursipembeli;
+                    int tempkolom;
+                    tempkolom = toupper(kolomkursipembeli);
+                    kolom = tempkolom;
                     kolom-=64;
                 } while (kolomkursipembeli == !('A'||'B'||'C'||'D'||'E'));
 
@@ -142,9 +145,7 @@ void pemilihan()
                 {
                     cout << "Kursi tersedia";
                     kursi[baris][kolom] = "x";
-
-                    cout << "\n";
-                    
+                    cout << "\n";  
                     system("CLS");
                     
                     for (int j = 0; j < 6; j++)
@@ -158,7 +159,6 @@ void pemilihan()
                             }
                         }
                     }
-
                     cout << "\n";
                     i++;
                     char opsi;
@@ -180,11 +180,12 @@ void pemilihan()
                     }
 
                     tampilan = i;
+                    terakhir = i;
                     cin.ignore();
                 }else
-                    {
-                        cout << "Kursi tidak tersedia, mohon pilih kursi lain.\n\n";
-                    }
+                {
+                    cout << "Kursi tidak tersedia, mohon pilih kursi lain.\n\n";
+                }
             }
         }else if (opsi == 2)
         {
@@ -194,6 +195,9 @@ void pemilihan()
                 cout << "Kursi: " << pembeli[j].getKolomkursi() << pembeli[j].getBariskursi() << "\n";
                 cout << "Nama pembeli: " <<pembeli[j].getNama() << "\n\n";
             }  
+        }else if (opsi == 3)
+        {
+            system("CLS");
         }else
         {
             cout << "Isikan opsi yang benar, program akan berakhir dalam 5 detik.\n";
@@ -210,11 +214,12 @@ void pemilihan()
 
 int main()
 {
-    cout << "PILIH FILM\n";
+    menu2:
+    cout << "FILM\n";
     cout << "1. VENOM: Return\n";
     cout << "2. Spiderman\n";
     
-    cout << "\nMENU LAIN\n";
+    cout << "\nLAINNYA\n";
     cout << "99. EXIT\n";
     cout << "\nPilih opsi: ";
     
@@ -224,6 +229,7 @@ int main()
     
     system("CLS");
     
+    
     switch (pilih)
     {
     case 1:
@@ -231,7 +237,21 @@ int main()
         Film no1;
         no1.film = "VENOM: Return";
         no1.pemilihan();
-        break;
+        
+        char opsi;
+        do
+        {
+            cout << "Kembali ke menu(Y/N)?\n";
+            cin >> opsi;
+        } while (!(opsi == 'Y' || opsi == 'N'));
+        if (opsi == 'Y')
+        {
+            system("CLS");
+            goto menu2;
+        } else
+        {
+            break;
+        }
         }
     case 2:
         {
