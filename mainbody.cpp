@@ -43,28 +43,11 @@ public:
     }    
 };
 
-void layar()
-{
-    char kolomkursipembeli;
-    int bariskursipembeli;
-    string kursi[6][6] = {{"X","A","B","C","D","E"},{"1","0","0","0","0","0"},{"2","0","0","0","0","0"},{"3","0","0","0","0","0"},{"4","0","0","0","0","0"},{"5","0","0","0","0","0"}};
-    for (int i = 0; i < 6; i++)
-    {
-        for (int j = 0; j < 6; j++)
-        {
-            cout << kursi[i][j] << " ";
-            if (j == 5)
-            {
-            cout << "\n";
-            }
-        }
-    }
-}
-
 class Film
 {
 public:
     string film;
+    string waktu;
 void pemilihan()
     {
         int jumlahmaksimumkursi = 25;
@@ -75,18 +58,22 @@ void pemilihan()
         int baris;
         int kolom;
         int opsi;
-        int tampilan;
+        int tampilan = 0;
         int terakhir = 0;
         string kursi[6][6] = {{"X","A","B","C","D","E"},{"1","0","0","0","0","0"},{"2","0","0","0","0","0"},{"3","0","0","0","0","0"},{"4","0","0","0","0","0"},{"5","0","0","0","0","0"}};
 
         menu:
-        cout << film << "\n";
+        cout << "Film: " << film << "\n";
+        cout << "Waktu tayang: " << waktu << "\n";
+        cout << "Kursi tersedia: 25\n\n";
         cout << "1. Input\n2. Lihat daftar\n3. Kembali ke menu\n";
         cin >> opsi;
+        system("CLS");
         cin.ignore();
 
         if (opsi == 1)
         {
+            penampilnamafilm();
             
             for (int j = 0; j < 6; j++)
             {
@@ -101,16 +88,6 @@ void pemilihan()
                 }
             }
 
-            if (film == "VENOM: Return")
-            {
-                cout << "\n" << setw(36);
-                cout << film << "\n";
-            } else if (film == "Spiderman")
-            {
-                cout << "\n" << setw(34);
-                cout << film << "\n";
-            }
-            
             int i = terakhir;
             while(i < jumlahmaksimumkursi)
             {
@@ -148,8 +125,11 @@ void pemilihan()
                     cout << "\n";  
                     system("CLS");
                     
+                    penampilnamafilm();
+                    
                     for (int j = 0; j < 6; j++)
                     {
+                        cout << setw(25);
                         for (int k = 0; k < 6; k++)
                         {
                             cout << kursi[j][k] << " ";
@@ -162,15 +142,20 @@ void pemilihan()
                     cout << "\n";
                     i++;
                     char opsi;
-                    
+                    tampilan = i;
+                    terakhir = i;
+
                     do
                     {
                         cout << "Apakah masih akan menginput data(Y/N)?\n";
-                        cin >> opsi;
+                        char tempopsi;
+                        cin >> tempopsi;
+                        opsi = toupper(tempopsi);
                     } while (!(opsi == 'Y' || opsi == 'N'));
                     
                     if (opsi == 'N')
                     {
+                        system("CLS");
                         goto menu;
                     }
 
@@ -178,9 +163,7 @@ void pemilihan()
                     {
                         break;
                     }
-
-                    tampilan = i;
-                    terakhir = i;
+                    
                     cin.ignore();
                 }else
                 {
@@ -189,12 +172,38 @@ void pemilihan()
             }
         }else if (opsi == 2)
         {
-            tampilan;
-            for (int j = 0; j <= tampilan; j++)
+            if (tampilan == 0)
             {
+                cout << "Tidak ada data\n";
+            }
+            else if (tampilan > 0)
+            {
+                for (int j = 0; j < tampilan; j++)
+                {
                 cout << "Kursi: " << pembeli[j].getKolomkursi() << pembeli[j].getBariskursi() << "\n";
                 cout << "Nama pembeli: " <<pembeli[j].getNama() << "\n\n";
-            }  
+                }
+            }
+            else
+            {
+                system("CLS");
+                terminate;
+            }
+
+            do
+            {
+                cout << "Apakah masih akan menginput data(Y/N)?\n";
+                char tempopsi;
+                cin >> tempopsi;
+                opsi = toupper(tempopsi);
+            } while (!(opsi == 'Y' || opsi == 'N'));
+            
+            if (opsi == 'Y')
+            {
+                system("CLS");
+                goto menu;
+            }
+             
         }else if (opsi == 3)
         {
             system("CLS");
@@ -209,6 +218,20 @@ void pemilihan()
             system("CLS");
             terminate;
         }  
+    }
+
+void penampilnamafilm()
+    {
+            if (film == "VENOM: Return")
+            {
+                cout << "\n" << setw(36);
+            } else if (film == "Spiderman")
+            {
+                cout << "\n" << setw(34);
+            }
+
+            cout << film << "\n";
+            
     }
 };
 
@@ -234,37 +257,62 @@ int main()
     {
     case 1:
         {
-        Film no1;
-        no1.film = "VENOM: Return";
-        no1.pemilihan();
-        
-        char opsi;
-        do
-        {
-            cout << "Kembali ke menu(Y/N)?\n";
-            cin >> opsi;
-        } while (!(opsi == 'Y' || opsi == 'N'));
-        if (opsi == 'Y')
-        {
-            system("CLS");
-            goto menu2;
-        } else
-        {
-            break;
-        }
+            Film no1;
+            no1.film = "VENOM: Return";
+            no1.waktu = "20.00 - 21.45";
+            no1.pemilihan();
+
+            char opsi;
+            do
+            {
+                cout << "Kembali ke menu utama(hal ini akan mereset input film, mengetik 'N' akan mengakhiri program)?(Y/N)?\n";
+                char tempopsi;
+                cin >> tempopsi;
+                opsi = toupper(tempopsi);
+            } while (!(opsi == 'Y' || opsi == 'N'));
+            if (opsi == 'Y')
+            {
+                system("CLS");
+                goto menu2;
+            } else
+            {
+                system("CLS");
+                break;
+            }
         }
     case 2:
         {
-        Film no2;
-        no2.film = "Spiderman";
-        no2.pemilihan();
+            Film no2;
+            no2.film = "Spiderman";
+            no2.waktu = "12.00 - 14.00";
+            no2.pemilihan();
+
+            char opsi;
+            do
+            {
+                cout << "Kembali ke menu utama(hal ini akan mereset input film, mengetik 'N' akan mengakhiri program)?(Y/N)?\n";
+                char tempopsi;
+                cin >> tempopsi;
+                opsi = toupper(tempopsi);
+            } while (!(opsi == 'Y' || opsi == 'N'));
+            if (opsi == 'Y')
+            {
+                system("CLS");
+                goto menu2;
+            } else
+            {
+                system("CLS");
+                break;
+            }
         }
         break;
     case 99:
         {
-          terminate;   
+            terminate;   
         }
     default:
         break;
     }
 }
+
+// 愛を込めて4人のグループによって作成されました。 私は下手ですよ、まだまだ勉強します。難しいけど、私たちが頑張ろう！ꦥꦏ꧀ꦩꦗꦶꦢ꧀꧈​ꦏꦸꦭꦺꦴ​ꦉꦩꦼꦤ꧀ꦏꦭꦶꦪꦤ꧀ꦥꦚ꧀ꦗꦼꦤꦼꦔꦤ꧀꧉​
